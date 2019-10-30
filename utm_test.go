@@ -29,6 +29,10 @@ func TestRadians(t *testing.T) {
 		{23, true, 683471, 7460682, -22.951948534, -43.210553081}, // Christ the Redeemer
 		// echo 539203 1358223 | cs2cs +proj=utm +zone=58 +south +ellps=WGS84 +to +proj=latlong -d 9
 		{58, true, 539203, 1358223, -77.846321004, 166.668248472}, // McMurdo Station
+		// echo 319991 3317942 | cs2cs +proj=utm +zone=36 +ellps=WGS84 +to +proj=latlong -d 9
+		{36, false, 319991, 3317942, 29.979168884, 31.134165895}, // Great Pyramid of Giza
+		// echo 448252 5411935 | cs2cs +proj=utm +zone=31 +ellps=WGS84 +to +proj=latlong -d 9
+		{31, false, 448252, 5411935, 48.858220907, 2.294502498}, // Eiffel Tower
 	}
 
 	for _, test := range tests {
@@ -64,6 +68,10 @@ func TestProject(t *testing.T) {
 		{23, true, 683470.999988894, 7460682.000030654, -22.951948534, -43.210553081}, // Christ the Redeemer
 		// echo 166.668248472 -77.846321004 | cs2cs +proj=latlong +to +proj=utm +zone=58 +south +ellps=WGS84 -d 9
 		{58, true, 539203.000000174, 1358222.999990588, -77.846321004, 166.668248472}, // McMurdo Station
+		// echo 31.134165895 29.979168884 | cs2cs +proj=latlong +to +proj=utm +zone=36 +ellps=WGS84 -d 9
+		{36, false, 319990.999982902, 3317942.000002784, 29.979168884, 31.134165895}, // Great Pyramid of Giza
+		// echo 2.294502498 48.858220907 | cs2cs +proj=latlong +to +proj=utm +zone=31 +ellps=WGS84 -d 9
+		{31, false, 448251.999984056, 5411935.000021702, 48.858220907, 2.294502498}, // Eiffel Tower
 	}
 
 	for _, test := range tests {
@@ -86,6 +94,6 @@ func BenchmarkRadians(b *testing.B) {
 
 func BenchmarkProject(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		Radians(18, false, 40.689170987, -74.044439711)
+		Project(18, false, 40.689170987, -74.044439711)
 	}
 }

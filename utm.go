@@ -88,21 +88,21 @@ func Radians(zone int, south bool, easting, northing float64) (float64, float64)
 	η0Prime := ηPrime - (η1Prime + η2Prime + η3Prime + η4Prime)
 
 	βPrime := math.Asin(math.Sin(ξ0Prime) / math.Cosh(η0Prime))
-	QPrime := math.Asinh(math.Tan(βPrime))
+	qPrime := math.Asinh(math.Tan(βPrime))
 
-	QDoublePrime := QPrime + e*math.Atanh(e*math.Tanh(QPrime))
+	qDoublePrime := qPrime + e*math.Atanh(e*math.Tanh(qPrime))
 
 	// Iterate until the difference is insignificant.
 	for {
-		nextQDoublePrime := QPrime + e*math.Atanh(e*math.Tanh(QDoublePrime))
-		if nextQDoublePrime == QDoublePrime {
+		nextqDoublePrime := qPrime + e*math.Atanh(e*math.Tanh(qDoublePrime))
+		if nextqDoublePrime == qDoublePrime {
 			break
 		}
 
-		QDoublePrime = nextQDoublePrime
+		qDoublePrime = nextqDoublePrime
 	}
 
-	ϕ := math.Atan(math.Sinh(QDoublePrime))
+	ϕ := math.Atan(math.Sinh(qDoublePrime))
 	λ := λO(zone) + math.Asin(math.Tanh(η0Prime)/math.Cos(βPrime))
 	return ϕ, λ
 }
@@ -122,8 +122,8 @@ func Project(zone int, south bool, latitude, longitude float64) (float64, float6
 	h3 := n3*61/240 - n4*103/140
 	h4 := n4 * 49561 / 161280
 
-	Q := math.Asinh(math.Tan(latitude)) - e*math.Atanh(e*math.Sin(latitude))
-	β := math.Atan(math.Sinh(Q))
+	q := math.Asinh(math.Tan(latitude)) - e*math.Atanh(e*math.Sin(latitude))
+	β := math.Atan(math.Sinh(q))
 
 	η0 := math.Atanh(math.Cos(β) * math.Sin(longitude-λO(zone)))
 	ξ0 := math.Asin(math.Sin(β) * math.Cosh(η0))
